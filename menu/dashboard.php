@@ -68,7 +68,7 @@ require_once __DIR__ . '/controlador_dashboard.php';
             </a>
 
             <!-- Opción: Inscripción & Membresías -->
-            <a href="#modulo-inscripciones" class="sidebar-link">
+            <a href="../inscripciones/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -79,7 +79,7 @@ require_once __DIR__ . '/controlador_dashboard.php';
             </a>
 
             <!-- Opción: Órdenes de Compra -->
-            <a href="#modulo-ordenes" class="sidebar-link">
+            <a href="../ordenes_compra/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
@@ -89,7 +89,7 @@ require_once __DIR__ . '/controlador_dashboard.php';
             </a>
 
             <!-- Opción: Inventario & Equipos -->
-            <a href="#modulo-inventario" class="sidebar-link">
+            <a href="../inventario/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
@@ -98,7 +98,7 @@ require_once __DIR__ . '/controlador_dashboard.php';
             </a>
 
             <!-- Opción: Clases y Aforo (Natación y Boxeo) -->
-            <a href="#modulo-clases" class="sidebar-link">
+            <a href="../clases/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
@@ -106,10 +106,35 @@ require_once __DIR__ . '/controlador_dashboard.php';
                 <span>Clases & Aforo</span>
             </a>
 
+            <div class="menu-category">Servicios & Fidelización</div>
+
+            <!-- Opción: Suplementos (POS) -->
+            <a href="../suplementos/index.php" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Suplementos (POS)</span>
+            </a>
+
+            <!-- Opción: Referidos & Bonos -->
+            <a href="../referidos/index.php" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <line x1="19" y1="8" x2="19" y2="14"></line>
+                    <line x1="22" y1="11" x2="16" y2="11"></line>
+                </svg>
+                <span>Referidos & Bonos</span>
+            </a>
+
             <div class="menu-category">Reportes & Desempeño</div>
 
             <!-- Opción: Métricas y Bonos -->
-            <a href="#modulo-metricas" class="sidebar-link">
+            <a href="../metricas/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="20" x2="18" y2="10"></line>
                     <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -119,7 +144,7 @@ require_once __DIR__ . '/controlador_dashboard.php';
             </a>
 
             <!-- Opción: Cierre de Jornada -->
-            <a href="#modulo-cierre" class="sidebar-link">
+            <a href="../cierre/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -385,13 +410,13 @@ require_once __DIR__ . '/controlador_dashboard.php';
                         <h6 class="text-white fw-bold mb-2" style="font-size: 1.05rem;">Módulos del Sistema</h6>
                         <p class="small mb-3" style="color: #cbd5e1; font-size: 0.9rem;">Selecciona una opción del menú lateral para acceder a la gestión correspondiente:</p>
                         <div class="d-flex flex-wrap gap-2">
-                            <span class="module-badge">👥 Usuarios y Personal</span>
-                            <span class="module-badge">📝 Inscripción y Facturación</span>
-                            <span class="module-badge">🛒 Órdenes de Compra y Proveedores</span>
-                            <span class="module-badge">🏋️ Inventario de Equipos</span>
-                            <span class="module-badge">🏊‍♂️🥊 Natación y Boxeo</span>
-                            <span class="module-badge">📊 Bonos (Coaches Q700/Q500, Recepción Q700/Q500)</span>
-                            <span class="module-badge">📑 Reporte Diario de Cierre</span>
+                            <a href="../usuarios/index.php" class="module-badge text-decoration-none">👥 Usuarios y Personal</a>
+                            <a href="../inscripciones/index.php" class="module-badge text-decoration-none">📝 Inscripción y Facturación</a>
+                            <a href="../ordenes_compra/index.php" class="module-badge text-decoration-none">🛒 Órdenes de Compra y Proveedores</a>
+                            <a href="../inventario/index.php" class="module-badge text-decoration-none">🏋️ Inventario de Equipos</a>
+                            <a href="../clases/index.php" class="module-badge text-decoration-none">🏊‍♂️🥊 Natación y Boxeo</a>
+                            <a href="../metricas/index.php" class="module-badge text-decoration-none">📊 Bonos (Coaches Q700/Q500, Recepción Q700/Q500)</a>
+                            <a href="../cierre/index.php" class="module-badge text-decoration-none">📑 Reporte Diario de Cierre</a>
                         </div>
                     </div>
                 </div>

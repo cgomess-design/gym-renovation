@@ -152,11 +152,17 @@ CREATE TABLE `referidos` (
     `cliente_referido_id` INT NOT NULL UNIQUE,
     `membresia_id` INT NOT NULL,
     `bono_otorgado` DECIMAL(10,2) NOT NULL,        -- Q100 o Q150 según plan adquirido
-    `estado_bono` ENUM('PENDIENTE', 'APLICADO', 'RECLAMADO') DEFAULT 'APLICADO',
+    `estado_bono` ENUM('PENDIENTE', 'APLICADO', 'RECLAMADO') DEFAULT 'PENDIENTE',
+    `metodo_entrega` VARCHAR(50) NULL,             -- EFECTIVO, TRANSFERENCIA, DESCUENTO_MEMBRESIA, CANJE_SUPLEMENTOS
+    `fecha_entrega` DATETIME NULL,
+    `comprobante_egreso` VARCHAR(60) NULL,         -- EGR-REF-2026-XXXXX
+    `recepcionista_entrega_id` INT NULL,
+    `observaciones` TEXT NULL,
     `fecha_referido` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT `fk_referidor` FOREIGN KEY (`cliente_referidor_id`) REFERENCES `usuarios` (`id`),
     CONSTRAINT `fk_referido` FOREIGN KEY (`cliente_referido_id`) REFERENCES `usuarios` (`id`),
-    CONSTRAINT `fk_referido_plan` FOREIGN KEY (`membresia_id`) REFERENCES `membresias` (`id`)
+    CONSTRAINT `fk_referido_plan` FOREIGN KEY (`membresia_id`) REFERENCES `membresias` (`id`),
+    CONSTRAINT `fk_referido_rec` FOREIGN KEY (`recepcionista_entrega_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------------------------
@@ -400,3 +406,118 @@ INSERT INTO `clientes_membresias`
 (`usuario_id`, `membresia_id`, `sucursal_id`, `fecha_inicio`, `fecha_fin`, `estado`) 
 VALUES
 (6, 2, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 MONTH), 'VIGENTE');
+
+-- Factura de prueba para la membresía del cliente
+INSERT INTO `facturas` 
+(`numero_factura`, `cliente_id`, `membresia_id`, `sucursal_id`, `recepcionista_id`, `monto`, `metodo_pago`, `fecha_emision`) 
+VALUES
+('FAC-2026-00001', 6, 2, 1, 3, 350.00, 'TARJETA', NOW());
+
+-- Proveedores calificados de maquinaria y suministros
+INSERT INTO `proveedores` 
+(`id`, `nombre`, `contacto`, `telefono`, `email`, `calificacion_calidad`, `indice_precio`) 
+VALUES
+(1, 'LifeFitness Pro Equipments', 'Lic. Roberto Valle', '2331-4400', 'ventas@lifefitness.gt', 4.9, 'PREMIUM'),
+(2, 'Matrix Sport Centroamérica', 'Ing. Pamela Estrada', '2254-8899', 'corporativo@matrixgt.com', 4.6, 'MEDIO'),
+(3, 'Everlast Fight Gear', 'Carlos Batres', '2440-1122', 'distribuidor@everlast.com.gt', 4.8, 'ALTO'),
+(4, 'AquaPro Piscinas & Hidromasajes', 'Arq. Gabriel Soto', '2360-7733', 'proyectos@aquapro.gt', 4.7, 'MEDIO');
+
+-- Órdenes de compra de prueba
+INSERT INTO `ordenes_compra` 
+(`id`, `numero_orden`, `proveedor_id`, `sucursal_id`, `solicitado_por_usuario_id`, `total_orden`, `estado`, `fecha_orden`) 
+VALUES
+(1, 'OC-2026-001', 1, 1, 1, 45000.00, 'RECIBIDA', DATE_SUB(NOW(), INTERVAL 10 DAY)),
+(2, 'OC-2026-002', 3, 1, 1, 18500.00, 'APROBADA', DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(3, 'OC-2026-003', 2, 2, 1, 32000.00, 'SOLICITADA', NOW());
+
+-- Inventario de equipos con certificado 100% de calidad
+INSERT INTO `equipos_inventario` 
+(`codigo_inventario`, `sucursal_id`, `orden_compra_id`, `nombre_equipo`, `categoria`, `tiene_certificado_calidad`, `numero_certificado`, `fecha_adquisicion`, `estado_operativo`) 
+VALUES
+('EQ-CARD-101', 1, 1, 'Caminadora Profesional Matrix T70 Cardio', 'CARDIO', 1, 'CERT-ISO-9001-MTX-101', '2025-11-15', 'OPERATIVO'),
+('EQ-PESA-201', 1, 1, 'Set Mancuernas de Uretano 5-50 lbs con Rack', 'PESAS', 1, 'CERT-CALIDAD-100-USA-201', '2025-10-10', 'OPERATIVO'),
+('EQ-SILL-301', 1, 1, 'Sillón de Masaje 4D Zero Gravity Améliorant', 'SILLON_MASAJE', 1, 'CERT-CE-HEALTH-4D-301', '2026-01-20', 'OPERATIVO'),
+('EQ-BOXE-401', 1, 2, 'Ring Oficial de Boxeo 6x6 con Suelo Acolchado', 'BOXEO', 1, 'CERT-WBC-STD-2026-401', '2025-12-05', 'OPERATIVO'),
+('EQ-PISC-501', 1, 1, 'Sistema de Filtrado y Cloración Olímpica', 'PISCINA', 1, 'CERT-AQUA-HYGIENE-100', '2026-02-01', 'OPERATIVO'),
+('EQ-CARD-102', 2, 3, 'Bicicleta de Spinning Magnética Schwinn', 'CARDIO', 1, 'CERT-ISO-9001-SCHW-102', '2026-01-15', 'EN_MANTENIMIENTO');
+
+-- Clases programadas (Natación 10 cupos, Boxeo 15 cupos)
+INSERT INTO `clases_horarios` 
+(`sucursal_id`, `coach_id`, `disciplina`, `aforo_maximo`, `fecha`, `hora_inicio`, `hora_fin`, `cupos_ocupados`) 
+VALUES
+(1, 4, 'NATACION', 10, CURDATE(), '07:00:00', '08:00:00', 8),
+(1, 4, 'BOXEO', 15, CURDATE(), '18:00:00', '19:00:00', 14),
+(2, 4, 'NATACION', 10, DATE_ADD(CURDATE(), INTERVAL 1 DAY), '09:00:00', '10:00:00', 5);
+
+-- Métricas y bonos de desempeño
+INSERT INTO `metricas_desempeno` 
+(`empleado_id`, `tipo_equipo`, `semana_periodo`, `sesiones_o_ventas_realizadas`, `porcentaje_csat_o_retencion`, `porcentaje_bono_aplicado`, `monto_bono_total`) 
+VALUES
+(4, 'COACH', '2026-W37', 64, 95.0, 100, 1200.00),
+(3, 'RECEPCION', '2026-W37', 28, 96.5, 100, 1200.00),
+(4, 'COACH', '2026-W36', 52, 87.0, 75, 900.00);
+
+-- Reportes diarios de cierre de jornada
+INSERT INTO `reportes_cierre_jornada` 
+(`sucursal_id`, `fecha`, `cantidad_usuarios_dia`, `tiempo_promedio_minutos`, `ventas_servicios_tercerizados`, `ventas_membresias_total`, `usuarios_clases_natacion`, `usuarios_clases_boxeo`, `generado_en`) 
+VALUES
+(1, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 94, 76.5, 1850.00, 7500.00, 18, 28, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(2, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 82, 68.0, 1200.00, 5250.00, 10, 0,  DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(1, DATE_SUB(CURDATE(), INTERVAL 2 DAY), 89, 74.0, 1400.00, 6800.00, 16, 26, DATE_SUB(NOW(), INTERVAL 2 DAY));
+
+-- ------------------------------------------------------------------------------
+-- 15. TABLAS: TIENDA DE SUPLEMENTOS Y FACTURACIÓN POS (SERVICIOS TERCERIZADOS)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `suplementos_catalogo` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `codigo` VARCHAR(50) NOT NULL UNIQUE,
+    `nombre` VARCHAR(150) NOT NULL,
+    `categoria` ENUM('PROTEINAS', 'CREATINAS', 'AMINOACIDOS', 'PRE_WORKOUT', 'BEBIDAS', 'ACCESORIOS') NOT NULL,
+    `precio` DECIMAL(10,2) NOT NULL,
+    `stock` INT NOT NULL DEFAULT 0,
+    `descripcion` VARCHAR(255) NULL,
+    `estado` ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO',
+    `creado_en` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `suplementos_ventas` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `numero_factura` VARCHAR(50) NOT NULL UNIQUE,
+    `cliente_id` INT NULL,
+    `sucursal_id` INT NOT NULL,
+    `vendedor_id` INT NOT NULL,
+    `subtotal` DECIMAL(10,2) NOT NULL,
+    `monto_bono_usado` DECIMAL(10,2) DEFAULT 0.00,
+    `total_venta` DECIMAL(10,2) NOT NULL,
+    `metodo_pago` ENUM('EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'BONO_REFERIDO') DEFAULT 'EFECTIVO',
+    `fecha_venta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT `fk_sup_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `fk_sup_sucursal` FOREIGN KEY (`sucursal_id`) REFERENCES `sucursales` (`id`),
+    CONSTRAINT `fk_sup_vendedor` FOREIGN KEY (`vendedor_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `suplementos_ventas_detalle` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `venta_id` INT NOT NULL,
+    `producto_id` INT NOT NULL,
+    `cantidad` INT NOT NULL,
+    `precio_unitario` DECIMAL(10,2) NOT NULL,
+    `subtotal` DECIMAL(10,2) NOT NULL,
+    CONSTRAINT `fk_det_venta` FOREIGN KEY (`venta_id`) REFERENCES `suplementos_ventas` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_det_prod` FOREIGN KEY (`producto_id`) REFERENCES `suplementos_catalogo` (`id`)
+) ENGINE=InnoDB;
+
+-- Datos semilla del catálogo de suplementos
+INSERT INTO `suplementos_catalogo` 
+(`codigo`, `nombre`, `categoria`, `precio`, `stock`, `descripcion`) 
+VALUES
+('PROT-ISO-01', 'Proteína Iso Whey 5 lbs (Vainilla Francesa)', 'PROTEINAS', 450.00, 25, 'Proteína aislada de suero 25g de proteína pura por servicio.'),
+('PROT-WHE-02', 'Gold Standard 100% Whey 5 lbs (Doble Chocolate)', 'PROTEINAS', 420.00, 30, 'La proteína de suero más reconocida a nivel mundial.'),
+('CREA-PUR-01', 'Creatina Monohidratada Creapure 300g (Sin Sabor)', 'CREATINAS', 280.00, 40, '100% pureza alemana para fuerza explosiva y recuperación.'),
+('PRE-C4-01',   'Pre-Workout C4 Original Explosive Energy (Blue Raz)', 'PRE_WORKOUT', 320.00, 20, 'Fórmula pre-entrenamiento con beta-alanina y cafeína.'),
+('BCAA-XT-01',  'BCAA 2:1:1 Aminoácidos Esenciales 400g (Sandía)', 'AMINOACIDOS', 220.00, 18, 'Recuperación muscular intra y post-entreno.'),
+('BEB-GAT-01',  'Bebida Isotónica Gatorade Frutas 600ml', 'BEBIDAS', 15.00, 100, 'Rehidratación inmediata y reposición de electrolitos.'),
+('BEB-RED-02',  'Bebida Energizante Red Bull Energy Drink 250ml', 'BEBIDAS', 22.00, 60, 'Revitaliza cuerpo y mente antes del entrenamiento.'),
+('ACC-SHK-01',  'Shaker Pro Mezclador 700ml con Filtro Renovation', 'ACCESORIOS', 65.00, 50, 'Vaso batidor a prueba de fugas libre de BPA.'),
+('ACC-STR-02',  'Correas Straps Levantamiento Pesas Gym Heavy Duty', 'ACCESORIOS', 85.00, 35, 'Agarre reforzado para peso muerto y jalones pesados.');
+

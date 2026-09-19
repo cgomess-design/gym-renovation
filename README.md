@@ -87,27 +87,75 @@ c:\xampp\htdocs\Gym\
 │   └── logout.php                 # Cierre seguro de sesión y redirección
 │
 ├── menu/
-│   ├── dashboard.php              # Vista principal del Dashboard
+│   ├── dashboard.php              # Vista principal del Dashboard y navegación
 │   └── controlador_dashboard.php  # Lógica del dashboard y validación de acceso
 │
 ├── usuarios/
-│   ├── index.php                  # Vista del Mantenimiento de Usuarios (Tabla + Modales)
+│   ├── index.php                  # Vista de Mantenimiento de Usuarios (Tabla + Modales)
 │   └── controlador_usuarios.php   # Lógica CRUD de usuarios (Crear, Editar, Eliminar)
+│
+├── inscripciones/
+│   ├── index.php                  # Vista de Inscripciones y Membresías (Tabla + Modales)
+│   └── controlador_inscripciones.php # CRUD de membresías, asignación de planes y facturación
+│
+├── ordenes_compra/
+│   ├── index.php                  # Vista de Órdenes de Compra y Proveedores
+│   └── controlador_ordenes.php    # CRUD de compras, estados y comparativa de proveedores
+│
+├── inventario/
+│   ├── index.php                  # Vista de Inventario de Maquinaria y Equipos
+│   └── controlador_inventario.php # CRUD de equipos, certificados 100% calidad y estados
+│
+├── clases/
+│   ├── index.php                  # Vista de Clases y Control de Aforo (Natación y Boxeo)
+│   └── controlador_clases.php     # Programación de clases, aforos (10 y 15) y coaches
+│
+├── metricas/
+│   ├── index.php                  # Vista de Métricas y Liquidación de Bonos
+│   └── controlador_metricas.php   # Evaluación de metas semanales y bonos Q700/Q500
+│
+├── cierre/
+│   ├── index.php                  # Vista de Reporte Diario de Cierre de Jornada
+│   └── controlador_cierre.php     # Balance diario operativo y financiero por sucursal
+│
+├── suplementos/
+│   ├── index.php                  # Vista de Tienda de Suplementos y POS
+│   └── controlador_suplementos.php # Facturación de suplementos, control de stock y canje de bonos
+│
+├── referidos/
+│   ├── index.php                  # Vista de Referidos y Entrega de Dinero
+│   └── controlador_referidos.php  # Liquidación de bonos (Efectivo/Transf/Descuento) y egresos
 │
 ├── css/
 │   ├── bootstrap.min.css          # Framework Bootstrap 5.3 (local)
 │   ├── login.css                  # Estilos visuales del Login
 │   ├── dashboard.css              # Estilos del Dashboard, Sidebar y KPIs
-│   └── usuarios.css               # Estilos del Mantenimiento de Usuarios y Tablas
+│   ├── usuarios.css               # Estilos del Mantenimiento de Usuarios y Tablas
+│   ├── inscripciones.css          # Estilos de planes y beneficios de membresías
+│   ├── ordenes.css                # Estilos de estados de compra y proveedores
+│   ├── inventario.css             # Estilos de estados operativos y certificados
+│   ├── clases.css                 # Estilos de disciplinas y barras de aforo
+│   ├── metricas.css               # Estilos de metas y porcentajes de bono
+│   ├── cierre.css                 # Estilos de balance diario y recibos ejecutivos
+│   ├── suplementos.css            # Estilos de tarjetas de producto y panel de carrito POS
+│   └── referidos.css              # Estilos de badges de bonos y comprobantes de egreso
 │
 ├── js/
 │   ├── bootstrap.bundle.min.js    # Bootstrap 5 JS Bundle (local)
 │   ├── login.js                   # Interactividad y validaciones del Login
-│   └── usuarios.js                # Control de modales (Ver, Editar, Eliminar)
+│   ├── usuarios.js                # Control de modales de Usuarios
+│   ├── inscripciones.js           # Lógica interactiva de Inscripciones y Precios
+│   ├── ordenes.js                 # Control de modales y visor de Proveedores
+│   ├── inventario.js              # Ficha técnica y códigos de Inventario
+│   ├── clases.js                  # Control de aforo dinámico y horarios de Clases
+│   ├── metricas.js                # Cálculo dinámico de bonos y porcentajes
+│   ├── cierre.js                  # Comprobante ejecutivo de Cierre Diario
+│   ├── suplementos.js             # Carrito POS interactivo y canje de saldos de referidos
+│   └── referidos.js               # Control de entrega de dinero y recibos de egreso
 │
 ├── index.php                      # Página de inicio / Login del sistema
-├── database.sql                   # Script DDL/DML con 14 tablas relacionales y seeds
-└── README.md                      # Documentación general del proyecto
+├── database.sql                   # Script DDL/DML con 17 tablas relacionales y datos semilla
+└── README.md                      # Documentación general y completa del proyecto
 ```
 
 ---
@@ -204,6 +252,55 @@ El script de base de datos incluye cuentas sembradas para los diferentes roles y
   - 👁️ **Ver:** Modal con vista completa del expediente del usuario, datos biométricos (hash de huella dactilar) y registro de auditoría.
   - ✏️ **Editar:** Modal para actualizar nombres, correo, teléfono, rol, sucursal, tipo de persona y estado.
   - 🗑️ **Eliminar:** Modal de confirmación con borrado inteligente: si el usuario cuenta con historial operativo, se desactiva lógicamente para proteger la integridad referencial.
+
+### 4. Inscripción & Membresías (`inscripciones/index.php`)
+- **Afiliación de Clientes:** Asignación de planes exclusivos (Membresía Básica Q250.00 y Membresía Haute Q350.00).
+- **Facturación Automática:** Emisión en tiempo real de factura correlativa (`FAC-2026-XXXXX`), registro de método de pago y recepcionista emisor.
+- **Ficha de Beneficios:** Desglose interactivo en modal de descuentos en parqueo, sesiones de coaching, pases de prueba a terceros, bonos por referidos (Q100/Q150), acceso a piscinas, boxeo y sillones de masaje.
+- **Acciones:** Ver detalles y beneficios, editar vigencia/renovación automática, y cancelación de membresía.
+
+### 5. Órdenes de Compra & Proveedores (`ordenes_compra/index.php`)
+- **Directorio Calificado:** Comparativa de proveedores evaluando calificación de calidad (1.0 a 5.0) e índice de precios (*Económico, Medio, Alto, Premium*).
+- **Control Presupuestario:** Emisión de órdenes con número correlativo (`OC-2026-XXXX`), sucursal destino y usuario solicitante.
+- **Flujo de Estados:** Transición entre estados (*SOLICITADA, APROBADA, RECIBIDA, CANCELADA*).
+
+### 6. Inventario de Maquinaria & Equipos (`inventario/index.php`)
+- **Control de Maquinaria:** Registro por categorías (*Cardio, Pesas, Estático, Sillones de Masaje, Piscina, Boxeo*).
+- **Certificación de Calidad al 100%:** Acreditación formal de calidad y seguridad con número de certificado único.
+- **Ciclo Operativo:** Gestión de estados (*OPERATIVO, EN MANTENIMIENTO, DE BAJA*) para auditoría de activos.
+
+### 7. Clases & Control de Aforo (`clases/index.php`)
+- **Disciplinas Deportivas:** Clases especializadas de **Natación Olímpica** (aforo máximo 10 cupos) y **Boxeo Deportivo** (aforo máximo 15 cupos).
+- **Horarios Reglamentarios:** Bloques de 1 hora entre 6:00 AM y 7:00 PM con asignación de Coach instructor.
+- **Monitoreo de Aforo en Vivo:** Barra de progreso visual con porcentajes y contador dinámico de cupos ocupados y disponibles.
+
+### 8. Métricas & Bonos de Desempeño (`metricas/index.php`)
+- **Reglas de Negocio:**
+  - *Coaches:* Meta de 60 sesiones semanales y satisfacción CSAT &ge; 92%.
+  - *Recepción:* Meta de 25 ventas/inscripciones semanales y retención &ge; 95%.
+- **Liquidación Automática:** Cálculo de bonos de hasta **Q1,200.00** (Q700 primer lugar + Q500 segundo lugar/meta) según el porcentaje de cumplimiento (100%, 75%, 50% o 0%).
+
+### 9. Reporte Diario de Cierre de Jornada (`cierre/index.php`)
+- **Consolidación Diaria:** Aforo total de usuarios recibidos por sucursal y cálculo del tiempo promedio de permanencia (minutos).
+- **Balance Financiero:** Ingresos consolidados por venta de membresías y servicios tercerizados (suplementos, bebidas, nutrición).
+- **Comprobante Ejecutivo:** Generación de recibo/balance diario imprimible y auditable.
+
+### 10. Tienda de Suplementos & Punto de Venta (POS) (`suplementos/index.php`)
+- **Facturación de Servicios Tercerizados:** Venta ágil de suplementos oficiales (proteínas Whey, creatina Creapure, pre-entrenos C4, aminoácidos BCAA, bebidas energéticas e isotónicas, shakers y accesorios).
+- **Punto de Venta con Carrito Interactivo:** Panel sticky lateral con cálculo en vivo de subtotales, totales y soporte para cliente mostrador o miembro registrado.
+- **Canje Directo de Bonos de Referidos:** Detección automática del saldo disponible por referidos del cliente seleccionado, permitiendo cubrir parcial o totalmente la factura con su saldo acumulado.
+- **Facturación y Tickets Correlativos:** Generación automática de facturas exclusivas (`FAC-SUP-2026-XXXXX`), control de stock en tiempo real y modal de impresión de tickets.
+
+### 11. Programa de Referidos & Bonos en Efectivo (`referidos/index.php`)
+- **Fidelización y Recompensa Automática:** Generación de bonos al inscribir nuevos miembros recomendados:
+  - **Q100.00** por afiliación al Plan Básico.
+  - **Q150.00** por afiliación al Plan Haute.
+- **Modalidades de Entrega de Dinero:**
+  - 💵 **Efectivo en Caja / Recepción:** Liquidación física inmediata con generación de **Comprobante de Egreso de Caja** (`EGR-REF-2026-XXXXX`) firmado por el cliente.
+  - 🏦 **Transferencia Bancaria:** Registro de banco receptor y número de boleta/referencia.
+  - 🎟️ **Descuento en Mensualidad:** Aplicación directa a la próxima cuota de membresía del socio.
+  - 🥤 **Canje en Tienda:** Utilizable como saldo en la tienda de suplementos del gimnasio.
+- **Trazabilidad y Auditoría:** Control de recepcionista pagador, fecha de liquidación, estado del bono (*PENDIENTE, RECLAMADO, APLICADO*) e historial completo.
 
 ---
 

@@ -69,7 +69,7 @@ require_once __DIR__ . '/controlador_usuarios.php';
             </a>
 
             <!-- Otras opciones del sistema -->
-            <a href="../menu/dashboard.php#modulo-inscripciones" class="sidebar-link">
+            <a href="../inscripciones/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -79,7 +79,7 @@ require_once __DIR__ . '/controlador_usuarios.php';
                 <span>Inscripción</span>
             </a>
 
-            <a href="../menu/dashboard.php#modulo-ordenes" class="sidebar-link">
+            <a href="../ordenes_compra/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
@@ -88,7 +88,7 @@ require_once __DIR__ . '/controlador_usuarios.php';
                 <span>Orden de Compra</span>
             </a>
 
-            <a href="../menu/dashboard.php#modulo-inventario" class="sidebar-link">
+            <a href="../inventario/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
@@ -96,7 +96,7 @@ require_once __DIR__ . '/controlador_usuarios.php';
                 <span>Inventario de Equipos</span>
             </a>
 
-            <a href="../menu/dashboard.php#modulo-clases" class="sidebar-link">
+            <a href="../clases/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
@@ -104,9 +104,32 @@ require_once __DIR__ . '/controlador_usuarios.php';
                 <span>Clases & Aforo</span>
             </a>
 
+            <div class="menu-category">Servicios & Fidelización</div>
+
+            <a href="../suplementos/index.php" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Suplementos (POS)</span>
+            </a>
+
+            <a href="../referidos/index.php" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <line x1="19" y1="8" x2="19" y2="14"></line>
+                    <line x1="22" y1="11" x2="16" y2="11"></line>
+                </svg>
+                <span>Referidos & Bonos</span>
+            </a>
+
             <div class="menu-category">Reportes & Desempeño</div>
 
-            <a href="../menu/dashboard.php#modulo-metricas" class="sidebar-link">
+            <a href="../metricas/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="20" x2="18" y2="10"></line>
                     <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -115,7 +138,7 @@ require_once __DIR__ . '/controlador_usuarios.php';
                 <span>Métricas & Bonos</span>
             </a>
 
-            <a href="../menu/dashboard.php#modulo-cierre" class="sidebar-link">
+            <a href="../cierre/index.php" class="sidebar-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
